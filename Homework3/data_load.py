@@ -4,22 +4,24 @@ import fnmatch
 import pickle
 
 def Traverser():
-        list_data=[]
-        tuple1=()
-        start_dir = "fortune1"
-        for dirpath, folder, files in os.walk(start_dir):
-                for single_file in files:
-                        filepath = os.path.abspath(os.path.join(dirpath, single_file))
-                       	if fnmatch.fnmatch(single_file, "*txt”):
-                                           f = open(os.path.join(dirpath, single_file))
-                                           data1= f.read()
-                                           tuple1=(os.path,data1)
-                                           list_data.append(tuple1)
+  data_list=[]
+  tuple1=()
 
-        h.open("raw_data.pickle","bw")
-        pickle.dump(list_data,h)
-        h.close()
-print(filepath)
+  start_dir = "fortune1"
+  for dirpath, folder, files in os.walk(start_dir):
+    for single_file in files:
+      if fnmatch.fnmatch(single_file, "*txt") or fnmatch.fnmatch(single_file, "*log"):
+        filepath = os.path.abspath(os.path.join(dirpath, single_file))
+
+        f=open(filepath)
+        data1=f.read()
+        f.close()
+        tuple1 = (filepath,data1)
+        data_list.append(tuple1)
+
+
+        print(data_list)
+Traverser()
 
 data_list=["And now here is my secret, a very simple secret: It is only with the heart that one can see rightly; what is essential is invisible to the eye.",
 "All grown-ups were once children... but only few of them remember it.",
