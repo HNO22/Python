@@ -1,6 +1,7 @@
-import searcher
+import searcher1
 import data_load
 import indexer
 
-d= indexer.process_data(data_load.data_list)
-searcher.search(d)
+d= indexer.process_data("raw_data.pickle")
+#print(d)
+searcher1.search(d)

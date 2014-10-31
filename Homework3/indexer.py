@@ -1,45 +1,32 @@
 import pickle
-import os
+import shelve
 
 # preprocess list of quotes to map each word to list of indices where they occur
-word_indices={}
-for i,quote in enumerate(data_list):
-	words = quote.split()
-	for w in words:
-		if w in word_indices:
-			if word_indices[w].count(i) == 0:
-				word_indices[w].append(i)
-		else:
-			word_indices[w]=[i]
+def process_data(info):
+	word_indices={}
+	f=open(info,"br")
+	reading_list= pickle.load(f)
+	for t1 in reading_list:
+		f1=open(t1[0])
+		data_list=f1.read()
+		a= data_list.split()
+		for word in a:
+			if word in word_indices.keys():
+				word_indices[word]=word_indices[word]|{t1[0]}
+			else:
+				word_indices[word]= {t1[0]}
+		f1.close()
 
+	f.close()
+	#print(word_indices)
 
-def parse_query(query_str):
-	"""
-	Parse query string and return the set of unique keywords and the operator
-	as a tuple
-	"""
-	# unique keywords from query string
-	keywords = dict()
+	a="fortunes_shelve"
+	s=shelve.open(a)
+	for key, value in word_indices.items():
+		s[key]= value
+	
+	s.close()
 
-	# operator used in query string
-	operators = dict()
+	return a
 
-	# parse the query to save all unique keywords and operators
-	for w in query_str.split():
-		if w == 'or' or w == 'and':  # save operator
-			if w not in operators:
-				operators[w] = w
-		elif w not in keywords:  # save keyword
-			keywords[w] = w
-
-	# identify the operator to be used
-	op='and'
-	if ('or' in operators)  and ('and' in operators): # if query has both 'or' and 'and' then its 'and'
-		op = 'and'
-	elif len(operators) == 0: # if query has neither 'or' or 'and' then its 'and'
-		op = 'and'
-	else:
-		op = list( operators.keys())[0]
-
-	return (keywords, op)
-
+#process_data("raw_data.pickle")
