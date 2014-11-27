@@ -8,9 +8,9 @@ def server_health(environ, start_response):
 	message   = "<h1 style=\"color:crimson\">Server Health Monitor</h1>"
 	message  += "<table style=width:60%>"
 	message  += "<tr>"
-	message  += "<td style=\"background-color:lavender\"><strong>BOOT TIME:</strong></td>"
+	message  += "<td style=\"background-color:LIGHTGRAY\"><strong>BOOT TIME:</strong></td>"
 	boot_time = datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S")
-	message  += "<td style=\"background-color:LIGHTGRAY\">"+str(boot_time)+"</td>"
+	message  += "<td style=\"background-color:lavender\">"+str(boot_time)+"</td>"
 	message  += "<tr>"
 	cpu_util  = psutil.cpu_percent(interval=1, percpu=True)
 	message  += "<td rowspan=4 ><strong>CPU UTILIZATION:</strong>"
@@ -27,15 +27,15 @@ def server_health(environ, start_response):
 		count += 1
 	
 	message += "<tr>"
-	message += "<td style=\"background-color:lavender\"><strong>AVAILABLE MEMORY:</strong></td>"
+	message += "<td style=\"background-color:LIGHTGRAY\"><strong>AVAILABLE MEMORY:</strong></td>"
 	mem = psutil.virtual_memory()
-	message += "<td style=\"background-color:LIGHTGRAY\">"+str(mem.available)+"</td>"
+	message += "<td style=\"background-color:lavender\">"+str(mem.available)+"</td>"
 	message += "<tr>"
-	message += "<td style=\"background-color:white\"><strong>USED MEMORY:</strong></td>"
-	message += "<td style=\"background-color:LIGHTGRAY\">"+str(mem.used)+"</td>"
+	message += "<td ><strong>USED MEMORY:</strong></td>"
+	message += "<td style=\"background-color:lavender\">"+str(mem.used)+"</td>"
 	message += "<tr>"
-	message += "<td style=\"background-color:lavender\"><strong>USED PERCENTAGE:</strong></td>"
-	message += "<td style=\"background-color:LIGHTGRAY\">"+str(mem.percent)+"%"+"</td>"
+	message += "<td style=\"background-color:LIGHTGRAY\"><strong>USED PERCENTAGE:</strong></td>"
+	message += "<td style=\"background-color:lavender\">"+str(mem.percent)+"%"+"</td>"
 
 	return[bytes(message,'utf-8')]
 	
